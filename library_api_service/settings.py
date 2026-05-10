@@ -129,5 +129,5 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("Authorize",),
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
