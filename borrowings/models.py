@@ -26,7 +26,10 @@ class Borrowing(models.Model):
             raise ValidationError(
                 "Expected return date must be after borrow date"
             )
-        if  self.actual_return_date < self.borrow_date:
+        if (
+                self.actual_return_date is not None
+                and self.actual_return_date < self.borrow_date
+        ):
             raise ValidationError(
                 "Actual return date can't be earlier than borrow date"
             )

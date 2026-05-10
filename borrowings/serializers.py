@@ -30,9 +30,18 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
         model = Borrowing
         fields = ("borrow_date", "expected_return_date", "book")
 
+    def validate(self, attrs):
+        book = attrs["book"]
+        if book.inventory < 1:
+            raise serializers.ValidationError(
+                "Book inventory is 0"
+            )
+        return attrs
+
     def create(self, validated_data):
         book = validated_data["book"]
         user = self.context["request"].user
         book.inventory -= 1
         book.save()
-        return Borrowing(user=user, **validated_data)
+
+        return Borrowing.objects.create(user=user, **validated_data)
