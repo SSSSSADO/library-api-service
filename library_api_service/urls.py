@@ -6,11 +6,28 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/books/", include("books.urls", namespace="books")),
-    path("api/users/", include("users.urls", namespace="users")),
-    path("api/users/token/", TokenObtainPairView.as_view()),
-    path("api/users/token/refresh/", TokenRefreshView.as_view()),
     path(
-        "api/borrowings/", include("borrowings.urls", namespace="borrowings")
+        "api/books/",
+        include("books.urls",namespace="books"),
+        name="book-list"
+    ),
+    path(
+        "api/users/",
+        include("users.urls",namespace="users"),
+        name="user-list"
+    ),
+    path(
+        "api/users/token/",
+        TokenObtainPairView.as_view(),
+        name="token_obtain_pair"
+    ),
+    path("api/users/token/refresh/",
+         TokenRefreshView.as_view(),
+         name="token_refresh"
+    ),
+    path(
+        "api/borrowings/",
+        include("borrowings.urls",namespace="borrowings",),
+        name="borrowings-list"
     ),
 ]
