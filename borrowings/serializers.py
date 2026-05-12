@@ -1,3 +1,6 @@
+from django.db import transaction
+from django.db.models import F
+
 from rest_framework import serializers
 
 from books.serializers import BookDetailSerializer
@@ -33,15 +36,15 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         book = attrs["book"]
         if book.inventory < 1:
-            raise serializers.ValidationError(
-                "Book inventory is 0"
-            )
+            raise serializers.ValidationError("Book inventory is 0")
         return attrs
 
+    @transaction.atomic
     def create(self, validated_data):
         book = validated_data["book"]
         user = self.context["request"].user
-        book.inventory -= 1
+        book.inventory = F("inventory") - 1
         book.save()
+        book.refresh_from_db()
 
         return Borrowing.objects.create(user=user, **validated_data)
