@@ -36,3 +36,8 @@ This project uses JWT authentication.
 3. Create borrowing
 4. Return book
 5. Track inventory changes automatically
+
+## Run with Docker
+```bash
+docker-compose build
+docker-compose up
